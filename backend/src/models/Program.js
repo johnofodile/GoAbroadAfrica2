@@ -26,3 +26,6 @@ const ProgramSchema = new mongoose.Schema({
 //Text index for search
 ProgramSchema.index({ programName: 'text', university: 'text', country: 'text' });
 ProgramSchema.index({ country: 1, level: 1 });
+
+
+module.exports('Program', ProgramSchema);
