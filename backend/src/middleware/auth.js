@@ -32,7 +32,24 @@ catch(err){
 
 };
 
-exports.adminOnly= (req,res,next)=>{
-    if(req.user)
+exports.adminOnly = (req, res, next) => {
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ message: 'Admin access required' });
+  }
+  next();
+};
 
-}
+exports.consultantOrAdmin = (req, res, next) => {
+    const role = req.user?.role;
+if (role !== 'consultant' && role !== 'admin') {
+     return res.status(403).json({ message: 'Consultant access required' });
+  }
+  next();
+};
+
+ 
+   
+
+
+
+

@@ -28,4 +28,4 @@ ProgramSchema.index({ programName: 'text', university: 'text', country: 'text' }
 ProgramSchema.index({ country: 1, level: 1 });
 
 
-module.exports('Program', ProgramSchema);
+module.exports = mongoose.model('Program', ProgramSchema);
