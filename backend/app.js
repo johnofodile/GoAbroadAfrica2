@@ -13,6 +13,7 @@ const experienceRoutes = require('./src/routes/experiences');
 const bookingRoutes    = require('./src/routes/bookings');
 const paymentRoutes    = require('./src/routes/payments');
 const adminRoutes      = require('./src/routes/admin');
+const errorHandler=require('./src/middleware/errorhandler');
  
 const app = express();
  
@@ -22,6 +23,7 @@ app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true,
 }));
+app.use(errorHandler);
  
 // === RATE LIMITING: max 100 requests per 15 minutes per IP ===
 const limiter = rateLimit({
