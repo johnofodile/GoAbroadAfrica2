@@ -21,10 +21,10 @@ const UserSchema = new mongoose.Schema({
 // Hash password before saving
 UserSchema.pre('save', async function(/** @type {Function} */next) {
   if (!this.isModified('password')) 
-    return next();
+    return;
   this.password = await bcrypt.hash(this.password, 12);
   //without this line it will stop here permanently
-  next();
+  
 });
 
 

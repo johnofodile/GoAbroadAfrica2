@@ -20,10 +20,9 @@ const app = express();
 // === SECURITY MIDDLEWARE ===
 app.use(helmet()); // Adds security headers
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: ['http://localhost:3000','http://localhost:5173'],
   credentials: true,
 }));
-app.use(errorHandler);
  
 // === RATE LIMITING: max 100 requests per 15 minutes per IP ===
 const limiter = rateLimit({
@@ -63,5 +62,6 @@ app.use((err, req, res, next) => {
     message: err.message || 'Internal server error',
   });
 });
+app.use(errorHandler);
 
 module.exports = app;
