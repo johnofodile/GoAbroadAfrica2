@@ -7,8 +7,9 @@ const api = axios.create({
 
 // Response interceptor — if 401 returned, remove bad token
 api.interceptors.response.use(
-  (res) => res, (err) => {
-    if (err.response?.status === 401) {
+  (res) => res, 
+  (err) => {
+    if (err.response?.status === 401 && localStorage.getItem('token')){
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
