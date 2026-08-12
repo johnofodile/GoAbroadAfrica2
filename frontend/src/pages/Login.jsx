@@ -45,6 +45,10 @@ export default function Login() {
             <input name='password' type='password' required className='input'
               value={form.password} onChange={handleChange} placeholder='Your password' />
           </div>
+          <div className='text-right'>
+  <Link to='/forgot-password' className='text-sm text-primary hover:underline'>Forgot password?</Link>
+</div>
+
           <button type='submit' disabled={loading} className='btn-primary w-full py-2 text-center'>
             {loading ? 'Logging in...' : 'Login'}
           </button>
