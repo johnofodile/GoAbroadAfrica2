@@ -1,7 +1,9 @@
 import { useAuth } from '../context/AuthContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import { deleteExperience } from '../services/experienceService';
+
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -10,6 +12,20 @@ export default function Dashboard() {
     queryKey: ['my-experiences'],
     queryFn: () => api.get('/experiences?mine=true').then(r => r.data.experiences),
   });
+
+    const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteExperience,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['my-experiences'] }),
+  });
+
+  const handleDelete = (id) => {
+    if (window.confirm('Delete this experience? This cannot be undone.')) {
+      deleteMutation.mutate(id);
+    }
+  };
+
 
   return (
     <div className='page-container'>
@@ -49,18 +65,25 @@ export default function Dashboard() {
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           {myExperiences.map(exp => (
-            <div key={exp._id} className='card p-4 flex justify-between items-start'>
+                       <div key={exp._id} className='card p-4 flex justify-between items-start'>
               <div>
                 <p className='font-semibold text-gray-800'>{exp.title}</p>
                 <p className='text-xs text-gray-400 mt-1'>{exp.country} • {exp.category?.replace('-',' ')}</p>
               </div>
-              <span className={`text-xs px-2 py-1 rounded-full ${
-                exp.status === 'approved' ? 'bg-green-100 text-green-600' :
-                exp.status === 'rejected' ? 'bg-red-100 text-red-600' :
-                'bg-yellow-100 text-yellow-600'}`}>
-                {exp.status}
-              </span>
+              <div className='flex items-center gap-2'>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  exp.status === 'approved' ? 'bg-green-100 text-green-600' :
+                  exp.status === 'rejected' ? 'bg-red-100 text-red-600' :
+                  'bg-yellow-100 text-yellow-600'}`}>
+                  {exp.status}
+                </span>
+                <button onClick={() => handleDelete(exp._id)}
+                  className='text-xs text-red-500 hover:text-red-700 hover:underline'>
+                  Delete
+                </button>
+              </div>
             </div>
+
           ))}
         </div>
       )}
