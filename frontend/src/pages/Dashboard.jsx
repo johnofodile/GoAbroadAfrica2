@@ -65,11 +65,18 @@ export default function Dashboard() {
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           {myExperiences.map(exp => (
-                       <div key={exp._id} className='card p-4 flex justify-between items-start'>
-              <div>
-                <p className='font-semibold text-gray-800'>{exp.title}</p>
-                <p className='text-xs text-gray-400 mt-1'>{exp.country} • {exp.category?.replace('-',' ')}</p>
+                         <div key={exp._id} className='card p-4 flex justify-between items-start'>
+              <div className='flex items-center gap-3'>
+                {exp.images?.[0] && (
+                  <img src={exp.images[0]} alt={exp.title}
+                    className='w-14 h-14 rounded-lg object-cover flex-shrink-0' />
+                )}
+                <div>
+                  <p className='font-semibold text-gray-800'>{exp.title}</p>
+                  <p className='text-xs text-gray-400 mt-1'>{exp.country} • {exp.category?.replace('-',' ')}</p>
+                </div>
               </div>
+ 
               <div className='flex items-center gap-2'>
                 <span className={`text-xs px-2 py-1 rounded-full ${
                   exp.status === 'approved' ? 'bg-green-100 text-green-600' :
